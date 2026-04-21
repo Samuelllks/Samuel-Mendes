@@ -10,7 +10,7 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     body {
@@ -38,12 +38,15 @@
       align-items: center;
       text-align: center;
       background: rgba(255,255,255,0.05);
-      padding: 45px;
+      padding: 40px;
       border-radius: 25px;
       backdrop-filter: blur(20px);
       border: 1px solid rgba(255,255,255,0.1);
       width: 340px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
     }
+
+    h1 { font-size: 1.8rem; margin-bottom: 5px; }
 
     .btn {
       width: 100%;
@@ -54,11 +57,12 @@
       color: white;
       margin: 10px 0;
       text-align: center;
-      transition: transform 0.2s;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
     .btn:hover {
-      transform: scale(1.02);
+      transform: scale(1.03);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     }
 
     .pessoal {
@@ -67,6 +71,25 @@
 
     .Savio {
       background: linear-gradient(45deg, #1d976c, #93f9b9);
+    }
+
+    /* Estilo do botão discreto Spotify */
+    .spotify-link {
+      margin-top: 20px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #1DB954;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: 0.3s;
+      opacity: 0.6;
+    }
+
+    .spotify-link:hover {
+      opacity: 1;
+      text-shadow: 0 0 10px rgba(29, 185, 84, 0.5);
     }
   </style>
 </head>
@@ -80,7 +103,7 @@
 
 <div class="container">
   <h1>Samuel Mendes</h1>
-  <h2 style="font-weight: 300; font-size: 1.1rem; opacity: 0.8; margin-bottom: 20px;">Co-fundador</h2>
+  <h2 style="font-weight: 300; font-size: 1.1rem; opacity: 0.7; margin-bottom: 20px;">Co-fundador</h2>
 
   <a class="btn pessoal" href="https://samuelllks.github.io/Samuel2/" target="_blank">
     Samuel
@@ -89,27 +112,30 @@
   <a class="btn Savio" href="https://savioparada-oss.github.io/Meu-site-/" target="_blank">
     Savio
   </a>
+
+  <a class="spotify-link" href="https://open.spotify.com/playlist/6V1mauva1H0v7dxuahTnFV?si=0yzFZ0QvTSy-zziZEB826A" target="_blank">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.49 17.3c-.22.36-.68.48-1.03.26-2.85-1.74-6.44-2.13-10.68-1.16-.4.1-.8-.15-.9-.55-.1-.4.15-.8.55-.9 4.64-1.06 8.61-.62 11.8 1.33.35.22.47.67.26 1.02zm1.46-3.26c-.28.45-.87.59-1.32.32-3.26-2-8.23-2.58-12.09-1.41-.5.15-1.04-.13-1.19-.64-.15-.5.13-1.04.64-1.19 4.41-1.34 9.89-.68 13.62 1.6.45.28.6.86.34 1.32zm.12-3.4c-3.91-2.32-10.36-2.54-14.11-1.4-.6.18-1.24-.16-1.42-.76-.18-.6.16-1.24.76-1.42 4.29-1.3 11.43-1.04 15.96 1.64.54.32.72 1 .4 1.54-.33.54-1.01.72-1.59.4z"/>
+    </svg>
+    Minha Playlist
+  </a>
 </div>
 
 <script>
   const audio = document.getElementById("audio");
 
-  // Função para dar play
   const startAudio = () => {
-    audio.play().catch(e => console.log("Aguardando interação para tocar áudio."));
-    // Remove o listener após a primeira interação para não rodar toda vez que clicar
+    audio.play().catch(e => console.log("Aguardando interação."));
     window.removeEventListener("click", startAudio);
   };
 
-  // Tenta tocar assim que carregar (raramente funciona sem clique)
   window.addEventListener("load", () => {
     audio.play().catch(() => {
-      // Se falhar, toca no primeiro clique que o usuário der em qualquer lugar da página
       window.addEventListener("click", startAudio);
     });
   });
 
-  // --- Lógica do Fundo Interativo (Mantida) ---
+  // --- Lógica do Fundo Interativo ---
   const canvas = document.getElementById("bg");
   const ctx = canvas.getContext("2d");
 
@@ -139,7 +165,7 @@
     particles.forEach(p => {
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = "white";
+      ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
       ctx.fill();
 
       let dx = p.x - mouse.x;
@@ -152,11 +178,18 @@
       }
       p.x += p.dx;
       p.y += p.dy;
+      
       if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
       if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
     });
     requestAnimationFrame(draw);
   }
+  
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+
   draw();
 </script>
 
